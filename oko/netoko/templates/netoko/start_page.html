@@ -1,0 +1,174 @@
+{% extends 'netoko/base.html' %}
+
+
+
+{% block content %}
+
+
+<table align = 'center' id='mainbigpagetable' border='1px'  valign = 'top'>
+			       <tr>
+				       <td width='65%'>
+					                   <div id="map" class="map"></div>
+                                                   <script type="text/javascript">	
+
+                                                        
+
+					   
+													    var countries = new ol.layer.Vector({
+                                                           source: new ol.source.Vector({
+                                                           url: 'kml_country_page.kml',
+                                                           format: new ol.format.KML()
+                                                           })
+                                                           });
+														   
+														var geoobj = new ol.layer.Vector({
+                                                           source: new ol.source.Vector({
+                                                           url: 'geo_object.kml',
+                                                           format: new ol.format.KML()
+                                                           })
+                                                           });   
+																																				
+													   var raster = new ol.layer.Tile({
+                                                           source: new ol.source.OSM()
+                                                           });
+												   												   
+                                                       var map = new ol.Map({
+                                                           target: 'map',
+                                                           layers: [raster,countries,geoobj                            
+                                                           ],
+                                                           view: new ol.View({
+                                                           center: ol.proj.fromLonLat([32.41, 44.82]),
+                                                           zoom: 4
+                                                           })
+                                                           });
+														var popup = new ol.Overlay.Popup();
+                                                        map.addOverlay(popup);
+														map.on('click', function(evt) {
+                                                                                       popup.show('<div><h2>Coordinates</h2><p></p></div>');
+                                                                                      });
+													    
+                                                    </script>
+					   </td>
+					   
+					   <td width='35%' valign = 'top' align = 'center'>
+					    <table id='maininfoofsys' align = 'center' border='1px' valign = 'top' width='100%' height='100%'>
+	                           <th colspan="2" align = 'center' class='main_table_table_text'><h1>Общие данные</h1></th>	    
+			                   <tr>
+			                       <td width='50%' class='main_table_table_text'>
+				                        <h3>Количество стран</h3>
+				                    </td>
+				                    <td width='50%' class='main_table_table_data'>{{page_dict.main_table.country}}
+				                    </td>
+			                    </tr>
+			                    <tr>
+				                    <td class='main_table_table_text'>
+				                        <h3>Количество групп</h3>
+				                    </td>
+				                    <td width='50%' class='main_table_table_data'>{{page_dict.main_table.botgroups}}
+				                    </td>
+			                    </tr>
+		                        <tr>
+				                    <td class='main_table_table_text'>
+				                        <h3>Количество ботов</h3>
+				                    </td>
+			                        <td width='50%' class='main_table_table_data'>{{page_dict.main_table.bots}}
+				                    </td>
+			                    </tr>
+			                    <tr>
+			                         <td width='50%' class='main_table_table_text'>
+				                     <h3><b>Охват аудитории:</b></h3>
+				                     </td>
+				                     <td width='50%' class='main_table_table_data'>{{page_dict.main_table.auditory}}
+				                     </td>
+			                    </tr>
+			
+                        </table>
+					   </td>
+					</tr>
+</table>
+<hr>	
+
+    <table align='center' id='datatableofbotsandgroups' width='90%'>
+	       <tr>
+		       <td align='center'>
+			       <p align='center'><b><h1>Данные по ОТП и ПП</h1></b></p>
+				   <p align='center'></p>
+				   <p align='center'></p>
+				   <p align='center'></p>
+				   <p align='center'></p>
+				   <p align='center'></p>
+				   <p align='center'></p>
+				   <p align='center'><h3>Группы в социальных сетях</h3></p>
+				      <table align='center' id='datatableofonlygroups' border='1px' width='100%' >
+					     <tr>
+						     <td class='header_of_table'>Название группы</td>
+                             <td class='header_of_table'>Описание группы и характер контента</td>		 
+							 <td class='header_of_table'>Аккаунт администрирования группы</td>
+                             <td class='header_of_table'>Социальная сеть</td>							 
+                             <td class='header_of_table'>Динамика количества подписчиков</td> 
+						 </tr>
+						 {% for item in page_dict.groups %}
+						    <tr>
+						     <td class='main_table_table_text'><a href="https://www.facebook.com/groups/{{item.id_in_ss}}" target="_blank">{{item.name}}</a></td>
+                             <td class='main_table_table_text'>{{item.describe}}</td>	
+							 <td class='main_table_table_text'>{{item.bot}}</td>
+							 <td class='main_table_table_text'>{{item.type_of_socialnet}}</td>	
+                             <td class='main_table_table_text'>Динамика количества подписчиков</td>	 
+						 </tr>
+						 {% endfor %}
+					  </table>
+			   </td>
+		   </tr>
+		   <tr>
+		       <td align='center'>
+				   <p align='center'><h3>Аккаунты в социальных сетях</h3></p>
+				    <table align='center' id='datatableofonlybots' border='1px' width='100%'>
+					     <tr>
+						     <td class='header_of_table'>ФИО бота
+							 </td>
+							 <td class='header_of_table'>Дата создания
+							 </td>
+							 <td class='header_of_table'>Группы администрируемые ботом
+							 </td>
+							 <td class='header_of_table'>Страна
+							 </td>
+							 <td class='header_of_table'>Город
+							 </td>
+							 <td class='header_of_table'>Аккаунты в социальных сетях
+							 </td>
+							 <td class='header_of_table'>Динамика количества друзей
+							 </td>
+						 </tr>
+						 {% for item in page_dict.bots %}
+						 <tr>
+						     <td class='main_table_table_text'>{{item.name}} {{item.surname}}
+							 </td>
+							 <td class='main_table_table_text'>{{item.date_create}}
+							 </td>
+							 <td class='main_table_table_text'>
+							 {% for i in item.groups_of_bot %}
+							 <p><a href="https://www.facebook.com/groups/{{i.id_group_in_ss}}" target="_blank">{{i.name_of_group}}</p>
+							 {% endfor %}
+							 </td>
+							 <td class='main_table_table_text'>{{item.country}}
+							 </td>
+							 <td class='main_table_table_text'>{{item.city}}
+							 </td>
+							 <td class='main_table_table_text'>
+							 {% for z in item.all_accounts %}
+							 <p><a href="{{z.url_to_page}}{{z.id_bot_in_socnet}}" target="_blank">{{z.type_ss}}</p>
+							 {% endfor %}
+							 </td>
+							 <td class='main_table_table_text'><div id="dynamic_div_{{item.id}}"></div>{{item.dynamic_graphic|safe }}
+							 </td>
+						 </tr>
+						 {% endfor %}
+						 
+					  </table>
+			   </td>
+		   </tr>
+	</table>
+			   
+    
+
+{% endblock %}

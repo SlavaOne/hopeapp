@@ -1,0 +1,84 @@
+{% extends 'postman/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<p align="center"><u><h5 align="center">{{page_array.success}}</h5></u></p>
+ <hr>   
+<form method="POST" id="main_form_to_send_email">{% csrf_token %}
+
+<table border='1px' align='center' width='90%' valign='top' height="70%">
+	<tr>
+		<td id="from_people_td" width="25%"  valign='top' align='center'>
+        <p align="right"><a href="http://172.24.108.226:8000/admin/postman/tableofounemails/add/" target='_blank'>Ввести нового корреспондента </a></p>
+		<hr>
+			<table id="from_people_table">
+				
+                     <tr>
+                     	<td>
+                     		<select name="id_transmitters">
+                     		{% for item in page_array.transmitters %}
+                     			<option value="{{item.id}}"> {{item.name}} {{item.surname}} ({{item.e_mail}})</option>
+                     		{% endfor %}
+                     		</select>
+                     		
+                     		
+
+                     	   
+                     	</td>
+				     </tr>
+				
+				
+			</table>
+		</td>
+
+		<td id="to_people_td" width="25%"  valign='top' align='center'>
+		 <p align="right"><a href="http://172.24.108.226:8000/admin/postman/tableofresources/add/" target='_blank'>Ввести нового получателя </a></p>
+		 <hr>
+		   <div id="table-wrapper">
+           <div id="table-scroll">		 
+		        <table id="to_people_table">
+
+				    {% for item in page_array.recievers %}
+                     <tr>
+                     	<td>
+                     	   <u><h4>{{item.organization_name}}</h4></u>
+                     	   {% if item.name != None and item.name != "" %}
+				              <input type="checkbox" name="id_reciever" value="{{item.id}}" /> {{item.name}} {{item.surname}} ({{item.e_mail}})<br />
+				           {% endif %}
+                     	   {% if item.name == None or item.name == "" %}
+				              <input type="checkbox" name="id_reciever" value="{{item.id}}" /> {{item.e_mail}}<br />
+				           {% endif %}
+                           
+                            <i><h5>{{item.describe}}</h5></i>
+                           <br /><br />
+                     		<hr>
+                     	</td>
+				     </tr>
+				    {% endfor %}
+				</table>
+		    </div>
+            </div>
+		</td>
+
+
+		<td id="content_messages_td" width="50%"  valign='top' align='center'>
+		      <h2 align='center'>Тема сообщения</h2>
+		      <p align='center'><textarea name="subject_message" cols="100" rows="1" id="subject_message"></textarea></p>
+		      <h2 align='center'>Содержание сообщения</h2>
+		      <p align='center'><textarea name="text_message" cols="100" rows="23" id="text_message" value="text"></textarea></p>
+		      
+		</td>
+	</tr>
+
+
+
+</table>
+         <p align='center'></p>
+         <p align='center'></p>
+         <p align='center'></p>
+         <p align='center'><button type="submit" class="save btn btn-default">В тираж!</button></p>                                                            
+</form> 
+
+{% endblock %}

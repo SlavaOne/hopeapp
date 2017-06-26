@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from .models import Tableofresources,Tableofounemails,Sendingletters,Yesno
 from django.core.mail import send_mail
@@ -58,7 +59,6 @@ def nice_letter(request):# страница и форма распростран
     return_page_array['transmitters']=Tableofounemails.objects.all()
     return_page_array['recievers']=Tableofresources.objects.all().order_by('id')
     return_page_array['answers']=Yesno.objects.all()
-
     
     if request.method == 'POST': 
         from_message = str(request.POST['id_transmitters'])
@@ -67,24 +67,25 @@ def nice_letter(request):# страница и форма распростран
         text_message=str(request.POST['text_message'])
                 
         NameEmailsOfRecievers=[]
-        if text_message!="" and subject_message!="":
+        if from_message!="enter_reciever":
+           if text_message!="" and subject_message!="":
             for EachChekedId in to_message:
         	    NameEmail=Tableofresources.objects.values_list('e_mail').filter(id=EachChekedId)[0][0]
         	    NameEmailsOfRecievers.append(NameEmail)
-
             From_email=Tableofounemails.objects.values_list('e_mail').filter(id=from_message)[0][0]
             From_password=Tableofounemails.objects.values_list('password').filter(id=from_message)[0][0]
-
             for OneEmail in NameEmailsOfRecievers:
                                                   SendMessages(From_email,From_password,OneEmail,subject_message,text_message,'Abracadabra','Abracadabra')
             text_success="Рассылка выполнена успешно!"
             return HttpResponseRedirect(request, 'postman/nice_letter.html',{'page_array':return_page_array,'success':text_success})
         else:
         	text_success="Введите тему и текст сообщения!"
-        	return render(request, 'postman/nice_letter.html',{'page_array':return_page_array,'success':text_success})
+        	return render(request, 'postman/nice_letter.html')
     else:
          text_success="Заполните данные форм!"
          return render(request, 'postman/nice_letter.html',{'page_array':return_page_array,'success':text_success})
+
+
 
 
 

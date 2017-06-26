@@ -11,13 +11,14 @@
 <table border='1px' align='center' width='90%' valign='top' height="70%">
 	<tr>
 		<td id="from_people_td" width="25%"  valign='top' align='center'>
-        <p align="right"><a href="http://172.24.108.226:8000/admin/postman/tableofounemails/add/" target='_blank'>Ввести нового корреспондента </a></p>
+        <p align="right"><a href="http://127.0.0.1:8000/admin/postman/tableofounemails/add/" target='_blank'>Ввести нового отправителя </a></p>
 		<hr>
 			<table id="from_people_table">
 				
                      <tr>
                      	<td>
                      		<select name="id_transmitters">
+                     		<option value="enter_reciever" selected="selected"> Выберите отправителя</option>
                      		{% for item in page_array.transmitters %}
                      			<option value="{{item.id}}"> {{item.name}} {{item.surname}} ({{item.e_mail}})</option>
                      		{% endfor %}
@@ -34,7 +35,7 @@
 		</td>
 
 		<td id="to_people_td" width="25%"  valign='top' align='center'>
-		 <p align="right"><a href="http://172.24.108.226:8000/admin/postman/tableofresources/add/" target='_blank'>Ввести нового получателя </a></p>
+		 <p align="right"><a href="http://127.0.0.1:8000/admin/postman/tableofresources/add/" target='_blank'>Ввести нового получателя </a></p>
 		 <hr>
 		   <div id="table-wrapper">
            <div id="table-scroll">		 

@@ -1,6 +1,0 @@
-{% extends 'netoko/base.html' %}
-
-{% block content8 %}
-Drive!
-
-{% endblock %}
